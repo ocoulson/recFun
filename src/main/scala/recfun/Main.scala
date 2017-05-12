@@ -39,5 +39,19 @@ object Main {
   /**
    * Exercise 3
    */
-    def countChange(money: Int, coins: List[Int]): Int = ???
+
+    def countChange(money: Int, coins: List[Int]): Int = {
+
+      def helper(remaining: Int, remainingCoins: List[Int], combinations: Int): Int ={
+        if (remainingCoins.isEmpty) combinations
+        else {
+          if (remaining - remainingCoins.head <= 0)
+            helper(remaining, remainingCoins.tail, combinations+1)
+          else helper(remaining - remainingCoins.head, remainingCoins, combinations)
+        }
+      }
+      val sortedCoins = coins.sortWith(_ > _)
+      helper(money, sortedCoins, 0)
+
+    }
   }
