@@ -41,17 +41,22 @@ object Main {
    */
 
     def countChange(money: Int, coins: List[Int]): Int = {
-
-      def helper(remaining: Int, remainingCoins: List[Int], combinations: Int): Int ={
-        if (remainingCoins.isEmpty) combinations
+      def helper(remaining: Int, remainingCoins: List[Int]): Int = {
+        if (remainingCoins.isEmpty) 0
         else {
-          if (remaining - remainingCoins.head <= 0)
-            helper(remaining, remainingCoins.tail, combinations+1)
-          else helper(remaining - remainingCoins.head, remainingCoins, combinations)
+          val diff = remaining - remainingCoins.head
+          if (diff == 0) 1 + helper(remaining, remainingCoins.tail)
+          else {
+            if (diff > 0)
+              helper(diff, remainingCoins) + helper(remaining, remainingCoins.tail)
+            else {
+              helper(remaining, remainingCoins.tail)
+            }
+          }
         }
       }
       val sortedCoins = coins.sortWith(_ > _)
-      helper(money, sortedCoins, 0)
+      helper(money, sortedCoins)
 
     }
   }
